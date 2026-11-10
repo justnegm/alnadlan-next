@@ -1,8 +1,10 @@
+"use client";
+
 import { useState, useEffect } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
 import { useAuth } from '@/store/auth-slice'
-import { Link } from 'react-router'
+import { Link } from '@/i18n/navigation'
 import { useQuery, useMutation, useInfiniteQuery } from '@tanstack/react-query'
 import { getUser, getTypes, getAreasAndCities, createLeadMessageAll, getCities, getAllCities } from '@/server/main'
 import { useForm, useStore } from '@tanstack/react-form'
@@ -144,7 +146,7 @@ const ContactAll = () => {
                     {!isAuth ? (
                         <div className="flex flex-col gap-4 py-8 items-center text-center">
                             <p className="text-zinc-600">{lang_1.contact.loginFirst}</p>
-                            <Link to="/auth">
+                            <Link href="/auth">
                                 <Button className="bg-[#08182D] text-white h-10 w-full">{lang_1.auth.loginVariant}</Button>
                             </Link>
                         </div>

@@ -1,7 +1,11 @@
 import { useAuth } from "@/store/auth-slice";
 import axios from "axios";
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+import Cookies from "js-cookie";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+// Client-side axios instance (auth lives in cookies, managed by the zustand
+// store). Server components must use src/server/http.ts instead.
 const api = axios.create({
   baseURL: BASE_URL,
   headers: {
@@ -10,7 +14,9 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = useAuth.getState().token;
+  // Prefer the store, but fall back to the cookie so requests fired before
+  // AuthBootstrap hydration still carry the token.
+  const token = useAuth.getState().token ?? Cookies.get("token");
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -27,7 +33,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
-      const refresh = useAuth.getState().refresh;
+      const refresh = useAuth.getState().refresh ?? Cookies.get("refresh");
       if (!refresh) {
         useAuth.getState().logout();
         return Promise.reject(error);
@@ -38,14 +44,14 @@ api.interceptors.response.use(
         }, { baseURL: BASE_URL });
 
         const newToken = res.data.access;
-        const newRefresh = res.data.refresh;
+        const newRefresh = res.data.refresh ?? refresh;
 
         useAuth.getState().login(newToken, newRefresh);
 
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
 
         return api(originalRequest);
-      } catch (err) {
+      } catch {
         useAuth.getState().logout();
       }
     }

@@ -1,4 +1,6 @@
-import { Link } from 'react-router'
+"use client";
+
+import { Link } from '@/i18n/navigation'
 import logo from '@/assets/logo.jpeg'
 import { Button } from '../ui/button'
 import { useState } from 'react'
@@ -40,11 +42,11 @@ const LandingNavbar = () => {
             <div className='flex lg:flex-row flex-row-reverse items-center gap-4 justify-between max-w-[1400px] w-[90%] mx-auto'>
                 <div className='lg:hidden w-10 flex items-center justify-end gap-2'>
                     {isAuth ? (
-                        <Link to={'/profile'} onClick={() => setToggle(false)} className='text-sm text-[#0d294e]'>
+                        <Link href={'/profile'} onClick={() => setToggle(false)} className='text-sm text-[#0d294e]'>
                             <UserRound size={14} />
                         </Link>
                     ) : (
-                        <Link to={'/auth'} onClick={() => setToggle(false)} className='text-sm text-[#0d294e]'>
+                        <Link href={'/auth'} onClick={() => setToggle(false)} className='text-sm text-[#0d294e]'>
                             <UserRound size={14} />
                         </Link>
                     )}
@@ -53,8 +55,8 @@ const LandingNavbar = () => {
                     </Button>
                 </div>
 
-                <Link to={'/'}>
-                    <Image src={logo} alt="logo" className='w-15 lg:w-20 aspect-square object-contain' />
+                <Link href={'/'}>
+                    <Image src={logo.src} alt="logo" className='w-15 lg:w-20 aspect-square object-contain' />
                 </Link>
 
                 <div className='hidden lg:flex items-center gap-12 px-8 py-4 bg-[#08182D] text-white rounded-xl' style={{ direction: 'rtl' }}>
@@ -70,14 +72,14 @@ const LandingNavbar = () => {
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <div className='flex items-center gap-2 cursor-pointer select-none'>
-                                    <Image src={data?.image || avatar} className='w-12 h-12 rounded-full object-cover' alt="avatar" />
+                                    <Image src={data?.image || avatar.src} className='w-12 h-12 rounded-full object-cover' alt="avatar" />
                                     <p className='text-sm font-bold'>{data?.full_name || lang_1.nav.defaultUsername}</p>
                                 </div>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-40 z-999" align="start">
                                 <DropdownMenuGroup>
                                     <DropdownMenuLabel>{lang_1.nav.myAccount}</DropdownMenuLabel>
-                                    <Link to={'/profile'}>
+                                    <Link href={'/profile'}>
                                         <DropdownMenuItem className='cursor-pointer py-4'>
                                             {lang_1.nav.profile}
                                         </DropdownMenuItem>
@@ -89,7 +91,7 @@ const LandingNavbar = () => {
                             </DropdownMenuContent>
                         </DropdownMenu>
                     ) : (
-                        <Link to={'/auth'}>
+                        <Link href={'/auth'}>
                             <Button variant={'outline'} className='lg:h-10 lg:px-6 text-sm lg:text-base border-[#08182D] text-[#08182D]'>
                                 {lang_1.nav.login}
                             </Button>
@@ -103,7 +105,7 @@ const LandingNavbar = () => {
                     {isAuth && (
                         <div className='flex flex-col'>
                             <p className='text-sm text-white p-4 border-b border-[#0d294e] text-center'>{lang_1.nav.welcome} {data?.full_name || lang_1.nav.defaultUsername} </p>
-                            <Link to={'/profile'} onClick={() => setToggle(false)} className='text-sm text-white p-4 border-b border-[#0d294e]'>
+                            <Link href={'/profile'} onClick={() => setToggle(false)} className='text-sm text-white p-4 border-b border-[#0d294e]'>
                                 {lang_1.nav.profile}
                             </Link>
                         </div>
@@ -121,7 +123,7 @@ const LandingNavbar = () => {
                     {isAuth ? (
                         <button onClick={() => { logout(); setToggle(false) }} className='text-sm text-white text-start p-4 mb-8 border-b border-[#0d294e] mt-2'>{lang_1.nav.logout}</button>
                     ) : (
-                        <Link to={'/auth'} onClick={() => setToggle(false)} className='text-sm text-white p-4 mb-8 border-b border-[#0d294e] mt-2'>
+                        <Link href={'/auth'} onClick={() => setToggle(false)} className='text-sm text-white p-4 mb-8 border-b border-[#0d294e] mt-2'>
                             {lang_1.nav.loginMobile}
                         </Link>
                     )}

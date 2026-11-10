@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { CalendarClock, Clock, Loader2, Plus, Trash2 } from "lucide-react";
 import { toast } from "sonner";

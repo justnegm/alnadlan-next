@@ -1,12 +1,15 @@
+"use client";
+
 import { useState } from "react"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { useQuery } from "@tanstack/react-query"
 import { getBankInfo } from "@/server/main"
 import { lang_1 } from "@/lib/lang_1"
-import placeholder from "@/assets/placeholder.webp"
-import { Link } from "react-router"
+import placeholderAsset from "@/assets/placeholder.webp"
 import { Image } from "@/components/ui/image";
+
+const placeholder = (placeholderAsset as any)?.src ?? (placeholderAsset as any);
 
 export default function InstallmentCalculator({ price }: { price: number | string }) {
     const [downPaymentPercent, setDownPaymentPercent] = useState([20])
@@ -93,11 +96,11 @@ export default function InstallmentCalculator({ price }: { price: number | strin
                         <p>{lang_1.details.paymentPeriodYears} : {years[0]}</p>
                         <p>{lang_1.details.interest} : {bankInfo?.bank_interest_rate || 0}%</p>
                     </div>
-                    <Link to={bankInfo?.link || "#"} target="_blank">
+                    <a href={bankInfo?.link || "#"} target="_blank" rel="noopener noreferrer">
                         <Button className="bg-[#A97A36] text-white hover:opacity-75 w-full h-10">
                             {lang_1.details.contactNow}
                         </Button>
-                    </Link>
+                    </a>
 
                     <p className="text-sm text-center text-white">{bankInfo?.bank_message}</p>
                 </div>

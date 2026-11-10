@@ -5,16 +5,7 @@ import { toast } from "sonner";
 import { lang_1 } from "./lang_1";
 
 
-export function lazyRetry<T extends { default: React.ComponentType<unknown> }>(
-  componentImport: () => Promise<T>,
-): Promise<T> {
-  return componentImport().catch((error: unknown) => {
-    console.error(error);
-    return Promise.reject(error);
-  });
-}
-
-export function useHorizontalDragScroll(ref: RefObject<HTMLElement>) {
+export function useHorizontalDragScroll(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
     const element = ref.current;
     if (!element) return;

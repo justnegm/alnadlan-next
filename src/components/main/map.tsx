@@ -1,4 +1,7 @@
+'use client';
+
 import { useCallback, useEffect, useRef, useState, type FC } from 'react';
+import Script from 'next/script';
 import { Baby, Bus, ChevronDown, Landmark, Loader2, Map as MapIcon, MapPin, Satellite, School, TrendingUp, X } from 'lucide-react';
 import proj4 from 'proj4';
 
@@ -80,7 +83,8 @@ interface PlaceDetails {
 
 type XY = { x: number; y: number };
 
-const MAP_TOKEN = import.meta.env.VITE_MAP_API_KEY;
+const MAP_TOKEN = process.env.NEXT_PUBLIC_MAP_API_KEY ?? "";
+const GOVMAP_SCRIPT_SRC = 'https://www.govmap.gov.il/govmap/api/govmap.api.js';
 const MAP_DIV_ID = 'map-container';
 const NEARBY_RADIUS = 500; // meters
 
@@ -268,6 +272,10 @@ const extractExtent = (e: any): { xmin: number; ymin: number; xmax: number; ymax
 };
 
 const MapComponent: FC<GovMapProps> = ({ address, title }) => {
+    // Flips when the govmap <Script> below finishes loading (or is already present),
+    // re-arming the createMap polling effect. The component tolerates
+    // window.govmap being undefined until then.
+    const [scriptReady, setScriptReady] = useState(false);
     const [isMapLoaded, setIsMapLoaded] = useState(false);
     const [bgMode, setBgMode] = useState<number>(BG_MODES.HYBRID);
     const [status, setStatus] = useState<'idle' | 'locating' | 'found' | 'notFound'>('idle');
@@ -449,6 +457,7 @@ const MapComponent: FC<GovMapProps> = ({ address, title }) => {
 
     // 1) Create the map (https://api.govmap.gov.il/docs/javascript-functions/create-map)
     useEffect(() => {
+        if (isMapLoaded) return; // already created; don't re-create on scriptReady flips
         let attempts = 0;
         let isReady = false;
         let fallbackTimer: ReturnType<typeof setTimeout> | undefined;
@@ -497,7 +506,9 @@ const MapComponent: FC<GovMapProps> = ({ address, title }) => {
                 fallbackTimer = setTimeout(markReady, 4000);
             } else if (attempts > 100) {
                 clearInterval(checkGovMap);
-                console.error('GovMap script failed to load.');
+                // Not fatal: when the next/script onLoad/onReady fires, scriptReady
+                // flips and this effect re-runs the polling.
+                console.warn('GovMap script not available yet.');
             }
         }, 100);
 
@@ -505,7 +516,7 @@ const MapComponent: FC<GovMapProps> = ({ address, title }) => {
             clearInterval(checkGovMap);
             if (fallbackTimer) clearTimeout(fallbackTimer);
         };
-    }, [onMapMovement]);
+    }, [onMapMovement, scriptReady, isMapLoaded]);
 
     // 2a) Ensure selected layers (including real estate deals / עסקאות נדל״ן) are explicitly activated
     useEffect(() => {
@@ -896,6 +907,14 @@ const MapComponent: FC<GovMapProps> = ({ address, title }) => {
             dir='ltr'
             className='relative h-105 sm:h-115 lg:h-125 max-w-400 w-[92%] sm:w-[90%] mx-auto rounded-2xl border border-zinc-300 overflow-hidden shadow-sm'
         >
+            {/* GovMap JS API (was loaded globally in the old Vite index.html) */}
+            <Script
+                src={GOVMAP_SCRIPT_SRC}
+                strategy='afterInteractive'
+                onLoad={() => setScriptReady(true)}
+                onReady={() => setScriptReady(true)}
+                onError={(e) => console.error('GovMap script failed to load:', e)}
+            />
             <div
                 id={MAP_DIV_ID}
                 className='absolute top-0 left-0 w-[142.857%] h-[142.857%] scale-[0.7] origin-top-left sm:static sm:w-full sm:h-full sm:scale-100'

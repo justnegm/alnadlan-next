@@ -1,10 +1,13 @@
+'use client';
+
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSet } from '../ui/field'
 import { useForm } from '@tanstack/react-form';
 import { Input } from '../ui/input';
 import { contactSchema } from '@/lib/helpers';
 import { Textarea } from '../ui/textarea';
 import { Button } from '../ui/button';
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useRouter, usePathname } from '@/i18n/navigation';
+import { useSearchParams } from 'next/navigation';
 import placeholder from '@/assets/avatar.webp'
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createLeadMessageAll, getUser } from '@/server/main';
@@ -20,8 +23,12 @@ import { useAuth } from '@/store/auth-slice';
 
 const ContactForm = ({ user, title, url }: any) => {
     const { isAuth } = useAuth((state) => state);
-    const location = useLocation();
-    const navigate = useNavigate();
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    // location.state doesn't exist in Next; the return URL is carried in ?next=
+    const search = searchParams.toString();
+    const returnTo = pathname + (search ? `?${search}` : "");
     const address = user?.address ?? user?.street;
     const phone = user?.phone;
     const email = user?.email;
@@ -65,7 +72,7 @@ const ContactForm = ({ user, title, url }: any) => {
                     sessionStorage.setItem(draftKey, JSON.stringify(currentValues));
                 }
                 toast.info(lang_1.contact.loginFirstContact);
-                navigate("/auth", { state: { from: location.pathname + location.search } });
+                router.push(`/auth?next=${encodeURIComponent(returnTo)}`);
                 return;
             }
             mutate({
@@ -110,7 +117,7 @@ const ContactForm = ({ user, title, url }: any) => {
     }, [currentUser, isAuth, draftKey]);
 
     const OuterContainer = (children: any) => {
-        if (url) return <Link to={`/${url}`} className="flex items-center gap-5">{children}</Link>
+        if (url) return <Link href={`/${url}`} className="flex items-center gap-5">{children}</Link>
         return <div className="flex items-center gap-5">{children}</div>
     }
 
@@ -143,7 +150,7 @@ const ContactForm = ({ user, title, url }: any) => {
                                 sessionStorage.setItem(draftKey, JSON.stringify(currentValues));
                             }
                             toast.info(lang_1.contact.loginFirstContact);
-                            navigate("/auth", { state: { from: location.pathname + location.search } });
+                            router.push(`/auth?next=${encodeURIComponent(returnTo)}`);
                             return;
                         }
                         form.handleSubmit();

@@ -1,4 +1,5 @@
-import { Link } from 'react-router'
+"use client";
+
 import { FaFacebook, FaInstagram, FaWhatsapp, FaTiktok, FaGlobe } from "react-icons/fa";
 import { X } from 'lucide-react';
 import { useMutation } from '@tanstack/react-query';
@@ -22,12 +23,13 @@ const SocialMediaList = ({ list }: SocialMediaListProps) => {
     return (
         <div className='flex items-center gap-4 flex-wrap'>
             {list?.map((item) => (
-                <Link
+                <a
                     onClick={() => mutate(item?.id as number)}
                     className='hover:scale-110 transition-all text-[#131927]'
                     key={item?.id}
-                    to={item?.social_url}
+                    href={item?.social_url}
                     target="_blank"
+                    rel="noopener noreferrer"
                 >
                     {item?.social_type === 'facebook' ? <FaFacebook size={32} />
                         : item?.social_type === 'instagram' ? <FaInstagram size={32} />
@@ -36,7 +38,7 @@ const SocialMediaList = ({ list }: SocialMediaListProps) => {
                                     : item?.social_type === 'whatsapp' ? <FaWhatsapp size={32} />
                                         : <FaGlobe size={32} />
                     }
-                </Link>
+                </a>
             ))}
         </div>
     )

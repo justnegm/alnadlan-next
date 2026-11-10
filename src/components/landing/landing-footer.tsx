@@ -1,5 +1,7 @@
+"use client";
+
 import logo from '@/assets/footerlogo.png'
-import { Link } from 'react-router'
+import { Link } from '@/i18n/navigation'
 import { FaFacebook, FaInstagram, FaWhatsapp, FaLinkedin, FaTiktok, FaTwitter } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query';
 import { getMainInfo } from '@/server/main';
@@ -23,15 +25,15 @@ const LandingFooter = () => {
     return (
         <footer className='py-12 pb-20 bg-[#08182D] text-white' style={{ direction: 'rtl' }}>
             <div className='max-w-[1400px] w-[90%] mx-auto flex flex-col items-center justify-center lg:gap-10 gap-6'>
-                <Link to={'/'}>
-                    <Image src={logo} alt="logo" className='w-60 aspect-square' />
+                <Link href={'/'}>
+                    <Image src={logo.src} alt="logo" className='w-60 aspect-square' />
                 </Link>
                 
                 <div className='flex lg:flex-row flex-col items-center lg:gap-20 gap-6 text-gray-300'>
-                    <Link to={'/terms-and-conditions'} className="hover:text-blue-300 transition-colors">
+                    <Link href={'/terms-and-conditions'} className="hover:text-blue-300 transition-colors">
                         {lang_1.footer.terms}
                     </Link>
-                    <Link to={'/privacy-policy'} className="hover:text-blue-300 transition-colors">
+                    <Link href={'/privacy-policy'} className="hover:text-blue-300 transition-colors">
                         {lang_1.footer.privacy}
                     </Link>
                 </div>
@@ -49,12 +51,12 @@ const LandingFooter = () => {
                         <p>{data.address}</p>
                     )}
                     {data?.phone && (
-                        <Link to={`tel:${data.phone}`} target="_blank" style={{ direction: 'ltr' }} className="hover:text-blue-300">
+                        <Link href={`tel:${data.phone}`} target="_blank" style={{ direction: 'ltr' }} className="hover:text-blue-300">
                             {data.phone}
                         </Link>
                     )}
                     {data?.email && (
-                        <Link to={`mailto:${data.email}`} target="_blank" className="hover:text-blue-300">
+                        <Link href={`mailto:${data.email}`} target="_blank" className="hover:text-blue-300">
                             {data.email}
                         </Link>
                     )}
@@ -62,32 +64,32 @@ const LandingFooter = () => {
 
                 <div className='flex items-center lg:gap-20 gap-6 flex-wrap justify-center mt-4'>
                     {data?.whatsapp && (
-                        <Link to={`https://wa.me/${data.whatsapp}`} target="_blank" className="hover:text-blue-300 transition-colors">
+                        <Link href={`https://wa.me/${data.whatsapp}`} target="_blank" className="hover:text-blue-300 transition-colors">
                             <FaWhatsapp size={32} />
                         </Link>
                     )}
                     {data?.facebook && (
-                        <Link to={data.facebook} target="_blank" className="hover:text-blue-300 transition-colors">
+                        <Link href={data.facebook} target="_blank" className="hover:text-blue-300 transition-colors">
                             <FaFacebook size={32} />
                         </Link>
                     )}
                     {data?.instagram && (
-                        <Link to={data.instagram} target="_blank" className="hover:text-blue-300 transition-colors">
+                        <Link href={data.instagram} target="_blank" className="hover:text-blue-300 transition-colors">
                             <FaInstagram size={32} />
                         </Link>
                     )}
                     {data?.linkedin && (
-                        <Link to={data.linkedin} target="_blank" className="hover:text-blue-300 transition-colors">
+                        <Link href={data.linkedin} target="_blank" className="hover:text-blue-300 transition-colors">
                             <FaLinkedin size={32} />
                         </Link>
                     )}
                     {data?.tiktok && (
-                        <Link to={data.tiktok} target="_blank" className="hover:text-blue-300 transition-colors">
+                        <Link href={data.tiktok} target="_blank" className="hover:text-blue-300 transition-colors">
                             <FaTiktok size={32} />
                         </Link>
                     )}
                     {data?.x && (
-                        <Link to={data.x} target="_blank" className="hover:text-blue-300 transition-colors">
+                        <Link href={data.x} target="_blank" className="hover:text-blue-300 transition-colors">
                             <FaTwitter size={32} />
                         </Link>
                     )}

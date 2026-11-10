@@ -1,31 +1,37 @@
+"use client";
+
 import type { Language } from "@/lib/translations";
-import React, { createContext, useState, useContext } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { DEFAULT_LOCALE, localePath } from "@/i18n/config";
+import React, { createContext, useContext } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 type LanguageContextType = {
   language: Language;
   changeLanguage: (lang: Language) => void;
 };
 const LanguageContext = createContext<LanguageContextType>({
-  language: "ar",
+  language: DEFAULT_LOCALE,
   changeLanguage: () => {},
 });
-export const LanguageProvider = ({ children } : { children: React.ReactNode }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
 
-  const urlParams = new URLSearchParams(location.search);
-  const initialLang = urlParams.get("lang") as Language || "ar";
+export const LanguageProvider = ({
+  locale,
+  children,
+}: {
+  locale: Language;
+  children: React.ReactNode;
+}) => {
+  const router = useRouter();
+  const pathname = usePathname(); // already has no /he prefix; /ar pages start with /ar
 
-  const [language, setLanguage] = useState<Language>(initialLang);
-
-  const changeLanguage = (lang : Language) => {
-    setLanguage(lang);
-    navigate(`?lang=${lang}`);
+  const changeLanguage = (lang: Language) => {
+    if (lang === locale) return;
+    const bare = pathname.replace(/^\/ar(?=\/|$)/, "") || "/";
+    router.push(localePath(lang, bare));
   };
 
   return (
-    <LanguageContext.Provider value={{ language, changeLanguage }}>
+    <LanguageContext.Provider value={{ language: locale, changeLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

@@ -1,16 +1,24 @@
+"use client";
+
 import { Button } from './button'
 import { ArrowLeft, ArrowRight, BedDouble, ChartNoAxesColumnDecreasing, House, MapPin, Share2, ShieldCheck, User } from 'lucide-react'
 import Reveal from './reveal'
 import { cn } from '@/lib/utils'
 import { formatPrice, shareUrl } from '@/lib/helpers';
 import { useState } from 'react';
-import placeholder from '@/assets/placeholder.webp'
-import { Link } from 'react-router';
+import placeholderAsset from '@/assets/placeholder.webp'
+import { Link } from '@/i18n/navigation';
 import { lang_1 } from '@/lib/lang_1';
 import AddToFavBtn from './add-to-fav-btn';
 import { Image } from "@/components/ui/image";
+import { useLanguage } from '@/context/LanguageContext';
+import { localePath } from '@/i18n/config';
+
+const placeholder = (placeholderAsset as any)?.src ?? (placeholderAsset as any);
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://alnadlan.co.il";
 
 const SpecialPropertyCard = ({ data, layoutTwo, grid, project, shorter }: any) => {
+    const { language } = useLanguage();
     const [currentImage, setCurrentImage] = useState(0)
     const handleNextImage = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -26,13 +34,13 @@ const SpecialPropertyCard = ({ data, layoutTwo, grid, project, shorter }: any) =
     const handleShare = () => {
         if (project) {
             shareUrl({
-                url: `${window.location.origin}/project/${data?.slug}`,
+                url: `${SITE_URL}${localePath(language, `/project/${data?.slug}`)}`,
                 title: data?.title,
                 text: data?.description,
             });
         } else {
             shareUrl({
-                url: `${window.location.origin}/property/${data?.slug}`,
+                url: `${SITE_URL}${localePath(language, `/property/${data?.slug}`)}`,
                 title: data?.title,
                 text: data?.description,
             });
@@ -103,7 +111,7 @@ const SpecialPropertyCard = ({ data, layoutTwo, grid, project, shorter }: any) =
                     </div>}
 
                 </div>
-                <Link to={project ? `/project/${data?.slug}` : `/property/${data?.slug}`}>
+                <Link href={project ? `/project/${data?.slug}` : `/property/${data?.slug}`}>
                     <Button className='px-6 rounded-xl text-xs bg-[#A97A36] text-white w-full h-10 relative'>{lang_1.sections.showMore}</Button>
                 </Link>
             </div>

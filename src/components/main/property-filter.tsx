@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from '../ui/input'
 import Reveal from '../ui/reveal'
 import { getAreasAndCities, getTypes, getCities, getAllCities } from '@/server/main'
@@ -12,7 +14,7 @@ import { Button } from '../ui/button'
 import { ChevronsUpDown } from 'lucide-react'
 import { lang_1 } from '@/lib/lang_1'
 
-import { useSearchParams } from 'react-router'
+import { useSearchParams } from 'next/navigation'
 
 interface PropertyFilterProps {
     title?: string;
@@ -22,7 +24,7 @@ interface PropertyFilterProps {
 }
 
 const PropertyFilter = ({ title, text, handleFilters, currentFilters }: PropertyFilterProps) => {
-    const [searchParams] = useSearchParams();
+    const searchParams = useSearchParams();
     const emptyFilters = {
         property_type: "",
         area: "",

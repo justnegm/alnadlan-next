@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from '../ui/input'
 import { getAreasAndCities, getCities, getAllCities } from '@/server/main'
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query'

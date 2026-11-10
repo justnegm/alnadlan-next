@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useMemo, useCallback, useEffect } from "react";
 import {
     ArrowRight,
@@ -9,7 +11,8 @@ import {
     Loader2,
 } from "lucide-react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "react-router";
+import { useRouter, usePathname } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { createAppointmentLead, getAppointmentLeads } from "@/server/main";
@@ -98,8 +101,9 @@ const PropertyAppointmentCalendar = ({
     userDuration,
 }: PropertyAppointmentCalendarProps) => {
     const { isAuth } = useAuth((state) => state);
-    const navigate = useNavigate();
-    const location = useLocation();
+    const router = useRouter();
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
     const queryClient = useQueryClient();
 
     // Duration in minutes (defaults to 60; will come from backend property user object)
@@ -294,7 +298,10 @@ const PropertyAppointmentCalendar = ({
     const handleBookAppointment = () => {
         if (!isAuth || !customerId) {
             toast.info(lang_1.contact.logincalenderToSend);
-            navigate("/auth", { state: { from: location.pathname + location.search } });
+            // location.state doesn't exist in Next; carry the return URL in ?next=
+            const search = searchParams.toString();
+            const returnTo = pathname + (search ? `?${search}` : "");
+            router.push(`/auth?next=${encodeURIComponent(returnTo)}`);
             return;
         }
 
