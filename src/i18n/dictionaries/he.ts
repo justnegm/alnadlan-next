@@ -449,6 +449,34 @@ const he = {
     "messageTooShort": "ההודעה קצרה מדי",
     "selectedPlan": "מסלול נבחר",
     "sendError": "שגיאה בשליחת ההודעה"
+  },
+  "common": {
+    "all": "הכל",
+    "loadingMore": "טוען עוד...",
+    "errorTitle": "אופס, משהו השתבש",
+    "tryAgain": "נסו שוב",
+    "backHome": "חזרה לדף הבית",
+    "notFoundTitle": "אופס, העמוד שחיפשתם לא נמצא",
+    "allRightsReserved": "כל הזכויות שמורות.",
+    "minimize": "מזער"
+  },
+  "map": {
+    "here": "הפרויקט כאן",
+    "address": "כתובת",
+    "gush": "גוש",
+    "helka": "חלקה",
+    "schools": "בתי ספר",
+    "kindergartens": "גני ילדים",
+    "busStops": "תחנות אוטובוס",
+    "within": "ברדיוס {radius} מ'",
+    "locating": "מאתר כתובת...",
+    "notFound": "לא נמצא מיקום מדויק לכתובת",
+    "nadlanDeals": "עסקאות נדל״ן",
+    "openNadlanTooltip": "הצג עסקאות נדל״ן בסביבה",
+    "satelliteView": "לוויין",
+    "satelliteTooltip": "תצלום אוויר ריאליסטי משולב עם שמות רחובות ומבנים",
+    "streetsView": "מפה",
+    "streetsTooltip": "מפת רחובות ומבנים"
   }
 };
 

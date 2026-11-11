@@ -1,3 +1,5 @@
+"use client";
+
 // Server-renderable: data is fetched in app/[locale]/(main)/terms-and-conditions/page.tsx
 // and passed down, so this CMS content is fully SSR'd (no client fetch).
 import logoAsset from '@/assets/logo.jpeg'

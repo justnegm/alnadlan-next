@@ -451,6 +451,34 @@ const ar: Dictionary = {
     "messageTooShort": "الرسالة قصيرة جدًا",
     "selectedPlan": "الباقة المختارة",
     "sendError": "حدث خطأ أثناء إرسال الرسالة"
+  },
+  "common": {
+    "all": "الكل",
+    "loadingMore": "جارٍ تحميل المزيد...",
+    "errorTitle": "عذرًا، حدث خطأ ما",
+    "tryAgain": "حاول مرة أخرى",
+    "backHome": "العودة إلى الصفحة الرئيسية",
+    "notFoundTitle": "عذرًا، الصفحة التي تبحث عنها غير موجودة",
+    "allRightsReserved": "جميع الحقوق محفوظة.",
+    "minimize": "تصغير"
+  },
+  "map": {
+    "here": "المشروع هنا",
+    "address": "العنوان",
+    "gush": "قسيمة (غوش)",
+    "helka": "قطعة (حلقة)",
+    "schools": "مدارس",
+    "kindergartens": "روضات أطفال",
+    "busStops": "محطات حافلات",
+    "within": "ضمن دائرة {radius} م",
+    "locating": "جارٍ تحديد العنوان...",
+    "notFound": "لم يتم العثور على موقع دقيق للعنوان",
+    "nadlanDeals": "صفقات عقارية",
+    "openNadlanTooltip": "عرض الصفقات العقارية في المنطقة",
+    "satelliteView": "قمر صناعي",
+    "satelliteTooltip": "صورة جوية واقعية مع أسماء الشوارع والمباني",
+    "streetsView": "خريطة",
+    "streetsTooltip": "خريطة الشوارع والمباني"
   }
 };
 

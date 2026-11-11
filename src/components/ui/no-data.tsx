@@ -1,3 +1,5 @@
+"use client";
+
 import { useT } from "@/i18n/useT";
 
 const NoData = () => {

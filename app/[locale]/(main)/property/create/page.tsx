@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import PropertyForm from "@/views/main/create-property";
 
-export const metadata: Metadata = {
-  title: "פרסום נכס",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: locale === "ar" ? "نشر عقار" : "פרסום נכס",
+    robots: { index: false, follow: false },
+  };
+}
 
 export default function PropertyCreatePage() {
   return <PropertyForm />;

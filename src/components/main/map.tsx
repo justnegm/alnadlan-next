@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type FC } from 'react';
 import Script from 'next/script';
 import { Baby, Bus, ChevronDown, Landmark, Loader2, Map as MapIcon, MapPin, Satellite, School, TrendingUp, X } from 'lucide-react';
 import proj4 from 'proj4';
+import { useT } from '@/i18n/useT';
 
 // Register EPSG:2039 (Israel Transverse Mercator) if not already registered
 if (!proj4.defs('EPSG:2039')) {
@@ -134,24 +135,6 @@ const DEFAULT_ACTIVE_LAYERS = [
     LAYERS.busStopsId,
 ];
 
-const TEXT = {
-    here: 'הפרויקט כאן',
-    address: 'כתובת',
-    gush: 'גוש',
-    helka: 'חלקה',
-    schools: 'בתי ספר',
-    kindergartens: 'גני ילדים',
-    busStops: 'תחנות אוטובוס',
-    within: `ברדיוס ${NEARBY_RADIUS} מ'`,
-    locating: 'מאתר כתובת...',
-    notFound: 'לא נמצא מיקום מדויק לכתובת',
-    nadlanDeals: 'עסקאות נדל״ן',
-    openNadlanTooltip: 'הצג עסקאות נדל״ן בסביבה',
-    satelliteView: 'לוויין',
-    satelliteTooltip: 'תצלום אוויר ריאליסטי משולב עם שמות רחובות ומבנים',
-    streetsView: 'מפה',
-    streetsTooltip: 'מפת רחובות ומבנים',
-};
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -272,6 +255,8 @@ const extractExtent = (e: any): { xmin: number; ymin: number; xmax: number; ymax
 };
 
 const MapComponent: FC<GovMapProps> = ({ address, title }) => {
+    const t = useT();
+    const TEXT = { ...t.map, within: t.map.within.replace("{radius}", String(NEARBY_RADIUS)) };
     // Flips when the govmap <Script> below finishes loading (or is already present),
     // re-arming the createMap polling effect. The component tolerates
     // window.govmap being undefined until then.
@@ -1021,8 +1006,8 @@ const MapComponent: FC<GovMapProps> = ({ address, title }) => {
                             <button
                                 type='button'
                                 onClick={() => setIsCardOpen(false)}
-                                title='מזער'
-                                aria-label='מזער'
+                                title={t.common.minimize}
+                                aria-label={t.common.minimize}
                                 className='shrink-0 rounded-md p-1 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 transition-colors cursor-pointer'
                             >
                                 <X className='h-3.5 w-3.5' />

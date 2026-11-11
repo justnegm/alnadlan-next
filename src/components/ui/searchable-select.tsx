@@ -68,7 +68,7 @@ export default function SearchableSelect({
 
     const isGrouped = grouped && data?.length > 0 && data[0][groupKey] !== undefined;
 
-    const allOption = { label: "הכל", value: "all" };
+    const allOption = { label: lang_1.common.all, value: "all" };
     const flatOptions = isGrouped
         ? [allOption, ...(data?.flatMap((group: any) => group[groupKey]?.map((el: any) => ({ label: el.name, value: String(el.id) }))) || [])]
         : [allOption, ...(data?.map((el: any) => ({ label: el.name, value: String(el.id) })) || [])];
@@ -110,7 +110,7 @@ export default function SearchableSelect({
     let displayText = placeholder;
     if (multi) {
         if (isAllSelected) {
-            displayText = "הכל";
+            displayText = lang_1.common.all;
         } else {
             const selectedLabels = selectedIds
                 .map((id) => {
@@ -122,7 +122,7 @@ export default function SearchableSelect({
         }
     } else {
         if (isAllSelected) {
-            displayText = "הכל";
+            displayText = lang_1.common.all;
         } else if (value) {
             const selected = flatOptions?.find((opt: any) => String(opt.value) === String(value));
             displayText = selected ? selected.label : (cachedLabels[value] || placeholder);
@@ -174,7 +174,7 @@ export default function SearchableSelect({
                                         if (!multi) setOpen(false)
                                     }}
                                 >
-                                    הכל
+                                    {lang_1.common.all}
                                     <Check
                                         className={cn(
                                             "mr-2 h-4 w-4",
@@ -209,7 +209,7 @@ export default function SearchableSelect({
                                                     onChange(newSelectedIds.join(","));
                                                 }}
                                             >
-                                                הכל
+                                                {lang_1.common.all}
                                                 {group[groupKey]?.length > 0 && group[groupKey]?.every((opt: any) => selectedIds.includes(String(opt.id))) && <Check size={12} className="h-4" />}
                                             </button>
                                         )}
@@ -298,7 +298,7 @@ export default function SearchableSelect({
                         {isLoadingMore && (
                             <div className="py-2 text-center text-xs text-zinc-500 font-medium flex items-center justify-center gap-2">
                                 <span className="w-4 h-4 border-2 border-zinc-500 border-t-transparent rounded-full animate-spin" />
-                                טוען עוד...
+                                {lang_1.common.loadingMore}
                             </div>
                         )}
                     </CommandList>

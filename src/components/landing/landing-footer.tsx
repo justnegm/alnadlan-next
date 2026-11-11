@@ -97,7 +97,7 @@ const LandingFooter = () => {
                     )}
                 </div>
                 
-                <p className="text-sm text-gray-400 mt-8">© {new Date().getFullYear()} Alnadlan. כל הזכויות שמורות.</p>
+                <p className="text-sm text-gray-400 mt-8">© {new Date().getFullYear()} Alnadlan. {lang_1.common.allRightsReserved}</p>
             </div>
         </footer>
     )
