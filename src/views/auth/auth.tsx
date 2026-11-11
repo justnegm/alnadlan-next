@@ -47,7 +47,9 @@ const Auth = () => {
       loginAuth();
       // react-router's location.state.from doesn't exist in Next; the
       // redirect target is carried in the ?next= query param instead.
-      const from = searchParams.get("next") || "/";
+      const next = searchParams.get("next");
+      // Only same-site paths: "//evil.com" or "https://..." would be an open redirect.
+      const from = next && next.startsWith("/") && !next.startsWith("//") ? next : "/";
       router.replace(from);
     },
     onError: (err: any) => {

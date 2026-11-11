@@ -8,7 +8,6 @@ import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { updatePassword } from "@/server/main"
 import { toast } from "sonner"
-import { useRouter } from "@/i18n/navigation"
 import { Eye, EyeOff, Lock } from 'lucide-react'
 import { useForm } from '@tanstack/react-form'
 import { updatePasswordSchema } from '@/lib/helpers'
@@ -17,7 +16,6 @@ import { useT } from "@/i18n/useT";
 
 const UpdatePassword = () => {
   const lang_1 = useT();
-    const router = useRouter();
     const { logout } = useAuth((state) => state)
     const [showPassword, setShowPassword] = useState(false)
     const [showNewPassword, setShowNewPassword] = useState(false)
@@ -38,8 +36,8 @@ const UpdatePassword = () => {
         mutationFn: (body: any) => updatePassword(body),
         onSuccess: () => {
             toast.success(lang_1.profile.passwordChanged);
-            logout();
-            router.push("/auth");
+            // New password → sign in again (overrides the default go-home-on-logout).
+            logout({ redirectTo: "/auth" });
         },
         onError: (err: any) => {
             const message = err?.response?.data?.message || err?.response?.data?.old_password?.[0] || err?.response?.data?.new_password1?.[0] || err?.response?.data?.new_password2?.[0] || lang_1.profile.passwordFailed;

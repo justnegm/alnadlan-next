@@ -1,9 +1,9 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { isProtectedPath } from "@/lib/protected-routes";
 
 const DEFAULT_LOCALE = "he";
 const NON_DEFAULT_LOCALES = ["ar"];
 
-const PROTECTED_PREFIXES = ["/profile", "/property/create", "/property/edit"];
 const AUTH_PREFIX = "/auth";
 
 export function proxy(request: NextRequest) {
@@ -61,10 +61,11 @@ function route(request: NextRequest): NextResponse {
   const hasToken = Boolean(request.cookies.get("token")?.value || request.cookies.get("refresh")?.value);
   const prefix = locale === DEFAULT_LOCALE ? "" : `/${locale}`;
 
-  if (!hasToken && PROTECTED_PREFIXES.some((p) => appPath === p || appPath.startsWith(`${p}/`))) {
+  if (!hasToken && isProtectedPath(appPath)) {
     const url = request.nextUrl.clone();
     url.pathname = `${prefix}/auth`;
-    url.search = "";
+    // Send them back here after login (auth.tsx reads ?next=, locale-less).
+    url.search = `?next=${encodeURIComponent(appPath + request.nextUrl.search)}`;
     return NextResponse.redirect(url);
   }
 
