@@ -4,13 +4,14 @@ import { Button } from './button'
 import { Heart } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addFavorite, removeFavoriteProject, removeFavoriteProperty } from '@/server/main';
 
 
 
 const AddToFavBtn = ({ project, data, black }: { project: any, data: any, black?: boolean }) => {
+  const lang_1 = useT();
 
     const queryClient = useQueryClient();
 

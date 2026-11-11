@@ -5,10 +5,11 @@ import { Link } from '@/i18n/navigation'
 import { FaFacebook, FaInstagram, FaWhatsapp, FaLinkedin, FaTiktok, FaTwitter } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query';
 import { getMainInfo } from '@/server/main';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 
 const Footer = () => {
+  const lang_1 = useT();
     const { data } = useQuery({
         queryKey: ['main-info'],
         queryFn: getMainInfo

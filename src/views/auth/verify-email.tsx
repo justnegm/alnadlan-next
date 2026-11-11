@@ -8,9 +8,10 @@ import { verify } from '@/server/auth';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 import Loader from '@/components/ui/loader';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 const VerifyEmail = () => {
+  const lang_1 = useT();
     const router = useRouter();
     // next/navigation returns the raw (encoded) segment; decode like react-router did.
     const params = useParams<{ key: string }>();

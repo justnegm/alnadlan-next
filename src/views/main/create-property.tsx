@@ -38,11 +38,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { createProperty, getAreasAndCities, getTypes, updateProperty, getProperty, deleteProperty, getStreets, getCities } from "@/server/main"
 import { contractTypes, createNumberArray, propertyConditions } from "@/lib/helpers"
 import { toast } from "sonner"
-import { lang_1 } from "@/lib/lang_1"
+import { useT } from "@/i18n/useT";
 import { getPropertyAddMedia } from "@/server/media"
 import { Image } from "@/components/ui/image";
 
 const PropertyForm = () => {
+  const lang_1 = useT();
     const queryClient = useQueryClient();
     // Rendered by both /property/create (no id) and /property/edit/[id].
     // next/navigation returns the raw (encoded) segment; decode like react-router did.
@@ -76,43 +77,6 @@ const PropertyForm = () => {
 
 
 
-    useEffect(() => {
-        if (existingProperty) {
-            setProperty((prev) => ({
-                ...prev,
-                contract_type: existingProperty.contract_type?.id?.toString() || existingProperty.contract_type?.toString() || "",
-                title: existingProperty.title || "",
-                desc: existingProperty.desc || "",
-                street: existingProperty.street_id?.toString() || existingProperty.street?.toString() || "",
-                property_number: existingProperty.property_number || "",
-                rooms_number: existingProperty.rooms_number || 0,
-                floor: existingProperty.floor || 0,
-                condition: existingProperty.condition || "",
-                property_area: existingProperty.property_area || "",
-                land_area: existingProperty.land_area || "",
-                entry_time: existingProperty.entry_time || "",
-                parking_number: existingProperty.parking_number || 0,
-                property_price: existingProperty.property_price || "",
-                special_entrance: existingProperty.special_entrance || false,
-                air_conditioner: existingProperty.air_conditioner || false,
-                elevator: existingProperty.elevator || false,
-                storehouse: existingProperty.storehouse || false,
-                water_heater: existingProperty.water_heater || false,
-                restored_property: existingProperty.restored_property || false,
-                security: existingProperty.security || false,
-                pets_allowed: existingProperty.pets_allowed || false,
-                property_type: existingProperty.property_type_id?.toString() || "",
-                area: existingProperty.area_id?.toString() || "",
-                city: existingProperty.city_id?.toString() || "",
-            }));
-            if (existingProperty.images) {
-                setImages(existingProperty.images.map((img: any) => img.image || img));
-            }
-            if (existingProperty.videos) {
-                setVideos(existingProperty.videos.map((vid: any) => vid.video || vid));
-            }
-        }
-    }, [existingProperty, areasAndCities]);
 
 
     const [property, setProperty] = useState({
@@ -164,6 +128,44 @@ const PropertyForm = () => {
     const [videos, setVideos] = useState<string[]>([]);
     const [videoFiles, setVideoFiles] = useState<File[]>([]);
     const videoInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        if (existingProperty) {
+            setProperty((prev) => ({
+                ...prev,
+                contract_type: existingProperty.contract_type?.id?.toString() || existingProperty.contract_type?.toString() || "",
+                title: existingProperty.title || "",
+                desc: existingProperty.desc || "",
+                street: existingProperty.street_id?.toString() || existingProperty.street?.toString() || "",
+                property_number: existingProperty.property_number || "",
+                rooms_number: existingProperty.rooms_number || 0,
+                floor: existingProperty.floor || 0,
+                condition: existingProperty.condition || "",
+                property_area: existingProperty.property_area || "",
+                land_area: existingProperty.land_area || "",
+                entry_time: existingProperty.entry_time || "",
+                parking_number: existingProperty.parking_number || 0,
+                property_price: existingProperty.property_price || "",
+                special_entrance: existingProperty.special_entrance || false,
+                air_conditioner: existingProperty.air_conditioner || false,
+                elevator: existingProperty.elevator || false,
+                storehouse: existingProperty.storehouse || false,
+                water_heater: existingProperty.water_heater || false,
+                restored_property: existingProperty.restored_property || false,
+                security: existingProperty.security || false,
+                pets_allowed: existingProperty.pets_allowed || false,
+                property_type: existingProperty.property_type_id?.toString() || "",
+                area: existingProperty.area_id?.toString() || "",
+                city: existingProperty.city_id?.toString() || "",
+            }));
+            if (existingProperty.images) {
+                setImages(existingProperty.images.map((img: any) => img.image || img));
+            }
+            if (existingProperty.videos) {
+                setVideos(existingProperty.videos.map((vid: any) => vid.video || vid));
+            }
+        }
+    }, [existingProperty, areasAndCities]);
 
     const handleVideoUpload = (e: ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
@@ -486,7 +488,7 @@ const PropertyForm = () => {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            {contractTypes.map((type) => (
+                                            {contractTypes(lang_1).map((type) => (
                                                 <SelectItem key={type.id} value={type.id.toString()}>
                                                     {type.name}
                                                 </SelectItem>
@@ -504,7 +506,7 @@ const PropertyForm = () => {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>
-                                            {propertyConditions.map((condition) => (
+                                            {propertyConditions(lang_1).map((condition) => (
                                                 <SelectItem key={condition.id} value={condition.id}>
                                                     {condition.name}
                                                 </SelectItem>

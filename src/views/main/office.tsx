@@ -17,7 +17,7 @@ import placeholderAsset from '@/assets/placeholder.webp'
 import ContactForm from '@/components/main/contact-form'
 import WorkingHoursPopover from '@/components/main/working-hours-popover'
 import SpecialPropertyCard from '@/components/ui/special-property-card'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import { getCompanyProfileMedia } from '@/server/media'
 import { Image } from "@/components/ui/image";
 import { useLanguage } from '@/context/LanguageContext'
@@ -27,6 +27,7 @@ const placeholder = (placeholderAsset as any)?.src ?? (placeholderAsset as any);
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://alnadlan.co.il";
 
 const Office = ({ initialData }: { initialData?: any }) => {
+  const lang_1 = useT();
     const { language } = useLanguage();
     const rawParams = useParams<{ id: string }>();
     const id = rawParams?.id ? decodeURIComponent(String(rawParams.id)) : undefined;

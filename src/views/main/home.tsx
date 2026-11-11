@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getBrokers, getProjects, getProperties, getSpecialProperties, getOffices, getMainInfo } from "@/server/main"
 import PropertyFilter from "@/components/main/property-filter"
 import useFilterNavigation from "@/hooks/useFilterNavigation"
-import { lang_1 } from "@/lib/lang_1"
+import { useT } from "@/i18n/useT";
 import { getHomeMedia } from "@/server/media"
 import Advertisement from "@/components/ui/advertisement"
 import { Image } from "@/components/ui/image"
@@ -30,6 +30,7 @@ export type HomeInitialData = {
 };
 
 const Home = ({ initialData }: { initialData?: HomeInitialData }) => {
+  const lang_1 = useT();
   const { handleFilters } = useFilterNavigation();
 
   const { data: mainInfo } = useQuery({

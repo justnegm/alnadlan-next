@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Check, ChevronsUpDown } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { lang_1 } from "@/lib/lang_1"
+import { useT } from "@/i18n/useT";
 
 interface SearchableSelectProps {
     value: string | null;
@@ -39,8 +39,8 @@ export default function SearchableSelect({
     value,
     onChange,
     data,
-    placeholder = lang_1.filters.pleaseSelect,
-    searchPlaceholder = lang_1.filters.searchPlaceholder,
+    placeholder: placeholderProp,
+    searchPlaceholder: searchPlaceholderProp,
     grouped = false,
     groupKey = "property_types",
     multi = false,
@@ -50,6 +50,9 @@ export default function SearchableSelect({
     onSearchChange,
     shouldFilter,
 }: SearchableSelectProps) {
+  const lang_1 = useT();
+    const placeholder = placeholderProp ?? lang_1.filters.pleaseSelect;
+    const searchPlaceholder = searchPlaceholderProp ?? lang_1.filters.searchPlaceholder;
     const [open, setOpen] = useState(false)
     const [localSearch, setLocalSearch] = useState("")
     const [cachedLabels, setCachedLabels] = useState<Record<string, string>>({})

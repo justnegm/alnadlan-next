@@ -12,7 +12,7 @@ export const getMaintenanceMode = async () => {
 
 
 export const getUser = async () => {
-  if (!useAuth.getState().token) {
+  if (!useAuth.getState().isAuth) {
     return null;
   }
   const res = await api.get("/auth/user/");

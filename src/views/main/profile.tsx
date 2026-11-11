@@ -30,7 +30,7 @@ import { toast } from 'sonner'
 import ListPagination from '@/components/main/pagination'
 import placeholder from '@/assets/avatar.webp'
 import SpecialPropertyCard from '@/components/ui/special-property-card'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import { getCustomerProfileMedia } from '@/server/media'
 import { Image } from "@/components/ui/image";
 import { useAuth } from "@/store/auth-slice";
@@ -63,6 +63,7 @@ const formatTime24 = (timeStr?: string) => {
 };
 
 const Profile = () => {
+  const lang_1 = useT();
     const isAuth = useAuth(state => state.isAuth);
     const [current, setCurrent] = useState(1)
     const [page, setPage] = useState(1);

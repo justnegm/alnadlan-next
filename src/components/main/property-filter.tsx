@@ -12,7 +12,7 @@ import { contractTypes } from '@/lib/helpers'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { Button } from '../ui/button'
 import { ChevronsUpDown } from 'lucide-react'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 
 import { useSearchParams } from 'next/navigation'
 
@@ -24,6 +24,7 @@ interface PropertyFilterProps {
 }
 
 const PropertyFilter = ({ title, text, handleFilters, currentFilters }: PropertyFilterProps) => {
+  const lang_1 = useT();
     const searchParams = useSearchParams();
     const emptyFilters = {
         property_type: "",
@@ -72,7 +73,7 @@ const PropertyFilter = ({ title, text, handleFilters, currentFilters }: Property
                     const url = new URL(lastPage.next);
                     const page = url.searchParams.get("page");
                     return page ? Number(page) : undefined;
-                } catch (e) {
+                } catch {
                     const match = lastPage.next.match(/[?&]page=(\d+)/);
                     return match ? Number(match[1]) : undefined;
                 }
@@ -141,7 +142,7 @@ const PropertyFilter = ({ title, text, handleFilters, currentFilters }: Property
                 />
                 <SearchableSelect
                     placeholder={lang_1.filters.contractType}
-                    data={contractTypes}
+                    data={contractTypes(lang_1)}
                     onChange={(value: any) => { setFilters({ ...filters, contract_type: value }); }}
                     value={filters.contract_type}
                 />

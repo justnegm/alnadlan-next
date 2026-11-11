@@ -1,70 +1,60 @@
 import { create } from "zustand";
 import Cookies from "js-cookie";
 
+/**
+ * Client auth state. The JWTs live in httpOnly cookies managed by the Next
+ * server (app/api/backend, app/api/session) and are never readable here; the
+ * non-secret `logged_in` cookie tells the UI whether a session exists.
+ */
 type AuthState = {
-  token: string | null;
-  refresh: string | null;
   isAuth: boolean;
-  /** False until auth state has been hydrated from cookies on the client. */
+  /** False until auth state has been read on the client. */
   hydrated: boolean;
 
-  hydrate: () => void;
-  login: (token: string, refresh: string) => void;
-  setToken: (token: string) => void;
-  logout: () => void;
+  hydrate: () => Promise<void>;
+  /** Call after a successful login; the server already set the cookies. */
+  login: () => void;
+  /** Local-only: mark the session as gone (server already cleared it). */
+  markLoggedOut: () => void;
+  logout: () => Promise<void>;
 };
-
-const COOKIE_OPTS: Cookies.CookieAttributes = {
-  path: "/",
-  sameSite: "lax",
-  secure: typeof location !== "undefined" ? location.protocol === "https:" : true,
-};
-
-// Access tokens are short-lived (refreshed by the axios interceptor); the
-// refresh token cookie is what keeps the session alive across visits.
-const TOKEN_EXPIRES_DAYS = 1;
-const REFRESH_EXPIRES_DAYS = 30;
 
 export const useAuth = create<AuthState>((set) => ({
-  // Starts empty on both server and client so SSR markup matches the first
-  // client render; AuthBootstrap hydrates from cookies after mount.
-  token: null,
-  refresh: null,
+  // Starts false on both server and client so SSR markup matches the first
+  // client render; AuthBootstrap hydrates after mount.
   isAuth: false,
   hydrated: false,
 
-  hydrate: () => {
-    // One-time migration from the old localStorage-based auth.
-    const legacyToken = localStorage.getItem("token");
-    const legacyRefresh = localStorage.getItem("refresh");
-    if (legacyToken && !Cookies.get("token")) {
-      Cookies.set("token", legacyToken, { ...COOKIE_OPTS, expires: TOKEN_EXPIRES_DAYS });
-      if (legacyRefresh) {
-        Cookies.set("refresh", legacyRefresh, { ...COOKIE_OPTS, expires: REFRESH_EXPIRES_DAYS });
+  hydrate: async () => {
+    // One-time upgrade from the old SPA, which kept JWTs in localStorage.
+    try {
+      const legacyToken = localStorage.getItem("token");
+      const legacyRefresh = localStorage.getItem("refresh");
+      if (legacyToken && !Cookies.get("logged_in")) {
+        await fetch("/api/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: legacyToken, refresh: legacyRefresh }),
+        });
       }
+      localStorage.removeItem("token");
+      localStorage.removeItem("refresh");
+    } catch {
+      /* storage blocked or network error: continue as logged out */
     }
-    localStorage.removeItem("token");
-    localStorage.removeItem("refresh");
-
-    const token = Cookies.get("token") ?? null;
-    const refresh = Cookies.get("refresh") ?? null;
-    set({ token, refresh, isAuth: Boolean(token || refresh), hydrated: true });
+    set({ isAuth: Cookies.get("logged_in") === "1", hydrated: true });
   },
 
-  login: (token, refresh) => {
-    Cookies.set("token", token, { ...COOKIE_OPTS, expires: TOKEN_EXPIRES_DAYS });
-    Cookies.set("refresh", refresh, { ...COOKIE_OPTS, expires: REFRESH_EXPIRES_DAYS });
-    set({ token, refresh, isAuth: true, hydrated: true });
-  },
+  login: () => set({ isAuth: true, hydrated: true }),
 
-  setToken: (token) => {
-    Cookies.set("token", token, { ...COOKIE_OPTS, expires: TOKEN_EXPIRES_DAYS });
-    set({ token, isAuth: true });
-  },
+  markLoggedOut: () => set({ isAuth: false, hydrated: true }),
 
-  logout: () => {
-    Cookies.remove("token", { path: "/" });
-    Cookies.remove("refresh", { path: "/" });
-    set({ token: null, refresh: null, isAuth: false, hydrated: true });
+  logout: async () => {
+    set({ isAuth: false, hydrated: true });
+    try {
+      await fetch("/api/session", { method: "DELETE" });
+    } catch {
+      /* cookies expire on their own */
+    }
   },
 }));

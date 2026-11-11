@@ -18,10 +18,11 @@ import {
 import avatar from '@/assets/avatar.webp'
 import { getUser } from '@/server/main'
 import { useQuery } from '@tanstack/react-query'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 
 const Navbar = () => {
+  const lang_1 = useT();
     const [toggle, setToggle] = useState(false)
     const { isAuth, logout } = useAuth((state) => state)
 
@@ -57,7 +58,7 @@ const Navbar = () => {
                     <Image src={logo.src} alt="logo" className='w-15 lg:w-20 aspect-square' />
                 </Link>
                 <div className='hidden lg:flex items-center gap-12 px-8 py-4 bg-[#08182D] text-white rounded-xl'>
-                    {Links?.map((link, index) => (
+                    {Links(lang_1)?.map((link, index) => (
                         <Link key={index} href={link.href}>
                             {link.name}
                         </Link>
@@ -105,7 +106,7 @@ const Navbar = () => {
 
                 )
                 }
-                {Links?.map((link, index) => (
+                {Links(lang_1)?.map((link, index) => (
                     <Link key={index} href={link.href} onClick={() => setToggle(false)} className='text-white p-4 border-b border-[#0d294e] last:border-0'>
                         {link.name}
                     </Link>

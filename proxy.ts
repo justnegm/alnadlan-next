@@ -7,6 +7,27 @@ const PROTECTED_PREFIXES = ["/profile", "/property/create", "/property/edit"];
 const AUTH_PREFIX = "/auth";
 
 export function proxy(request: NextRequest) {
+  return upgradeLegacySession(request, route(request));
+}
+
+/**
+ * Sessions created before the httpOnly switch have JS-readable token cookies and
+ * no `logged_in` flag. Re-issue them as httpOnly (same name/path overwrites).
+ */
+function upgradeLegacySession(request: NextRequest, res: NextResponse) {
+  const token = request.cookies.get("token")?.value;
+  const refresh = request.cookies.get("refresh")?.value;
+  if (!refresh || request.cookies.get("logged_in")) return res;
+
+  const base = { path: "/", sameSite: "lax" as const, secure: request.nextUrl.protocol === "https:" };
+  const month = 60 * 60 * 24 * 30;
+  if (token) res.cookies.set("token", token, { ...base, httpOnly: true, maxAge: 60 * 60 * 24 });
+  res.cookies.set("refresh", refresh, { ...base, httpOnly: true, maxAge: month });
+  res.cookies.set("logged_in", "1", { ...base, httpOnly: false, maxAge: month });
+  return res;
+}
+
+function route(request: NextRequest): NextResponse {
   const { pathname } = request.nextUrl;
 
   // 1. Resolve locale from the URL. Default locale ("he") is unprefixed;

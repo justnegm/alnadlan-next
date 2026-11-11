@@ -13,9 +13,10 @@ import { Eye, EyeOff, Lock } from 'lucide-react'
 import { useForm } from '@tanstack/react-form'
 import { updatePasswordSchema } from '@/lib/helpers'
 import { useAuth } from '@/store/auth-slice'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 
 const UpdatePassword = () => {
+  const lang_1 = useT();
     const router = useRouter();
     const { logout } = useAuth((state) => state)
     const [showPassword, setShowPassword] = useState(false)
@@ -80,7 +81,7 @@ const UpdatePassword = () => {
                                 name="old_password"
                                 validators={{
                                     onChange: ({ value }) => {
-                                        const result = updatePasswordSchema.shape.old_password.safeParse(value)
+                                        const result = updatePasswordSchema(lang_1).shape.old_password.safeParse(value)
                                         return result.success ? undefined : result.error.issues[0].message
                                     },
                                 }}
@@ -116,7 +117,7 @@ const UpdatePassword = () => {
                                 name="new_password1"
                                 validators={{
                                     onChange: ({ value }) => {
-                                        const result = updatePasswordSchema.shape.new_password1.safeParse(value)
+                                        const result = updatePasswordSchema(lang_1).shape.new_password1.safeParse(value)
                                         return result.success ? undefined : result.error.issues[0].message
                                     },
                                 }}
@@ -153,7 +154,7 @@ const UpdatePassword = () => {
                                 validators={{
                                     onChangeListenTo: ["new_password1"],
                                     onChange: ({ value, fieldApi }) => {
-                                        const result = updatePasswordSchema.shape.new_password2.safeParse(value)
+                                        const result = updatePasswordSchema(lang_1).shape.new_password2.safeParse(value)
                                         if (!result.success) return result.error.issues[0].message
                                         const password = fieldApi.form.getFieldValue("new_password1")
                                         if (!value || !password || value !== password) return lang_1.profile.passwordMismatch

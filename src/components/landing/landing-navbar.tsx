@@ -9,7 +9,7 @@ import { Image } from "@/components/ui/image"
 import { useAuth } from '@/store/auth-slice'
 import { getUser } from '@/server/main'
 import { useQuery } from '@tanstack/react-query'
-import { lang_1 } from '@/lib/lang_1'
+import type { Dictionary } from "@/i18n/useT";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -19,16 +19,18 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import avatar from '@/assets/avatar.webp'
+import { useT } from "@/i18n/useT";
 
-const landingLinks = [
+const landingLinks = (lang_1: Dictionary) => ([
     { name: lang_1.nav.home, href: "#hero" },
     { name: lang_1.landing.about, href: "#about" },
     { name: lang_1.landing.partners, href: "#partners" },
     { name: lang_1.landing.plans, href: "#plans" },
     { name: lang_1.footer.contact, href: "#contact" },
-];
+]);
 
 const LandingNavbar = () => {
+  const lang_1 = useT();
     const [toggle, setToggle] = useState(false)
     const { isAuth, logout } = useAuth((state) => state)
 
@@ -60,7 +62,7 @@ const LandingNavbar = () => {
                 </Link>
 
                 <div className='hidden lg:flex items-center gap-12 px-8 py-4 bg-[#08182D] text-white rounded-xl' style={{ direction: 'rtl' }}>
-                    {landingLinks.map((link, index) => (
+                    {landingLinks(lang_1).map((link, index) => (
                         <a key={index} href={link.href} className="hover:opacity-80 transition-opacity">
                             {link.name}
                         </a>
@@ -110,7 +112,7 @@ const LandingNavbar = () => {
                             </Link>
                         </div>
                     )}
-                    {landingLinks.map((link, index) => (
+                    {landingLinks(lang_1).map((link, index) => (
                         <a
                             key={index}
                             href={link.href}

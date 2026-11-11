@@ -14,23 +14,25 @@ import { toast } from "sonner"
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field"
 import { z } from "zod"
 import { Spinner } from "@/components/ui/spinner"
-import { lang_1 } from "@/lib/lang_1"
+import type { Dictionary } from "@/i18n/useT";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useQuery, useMutation } from "@tanstack/react-query"
 import api from "@/server/api"
 import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { useT } from "@/i18n/useT";
 
 const placeholderImg = (placeholderAsset as any)?.src ?? (placeholderAsset as any);
 
-const contactSchema = z.object({
+const contactSchema = (lang_1: Dictionary) => (z.object({
     name: z.string().min(2, lang_1.landing.nameRequired),
     email: z.string().email(lang_1.helpers.invalidEmail),
     phone: z.string().min(5, lang_1.landing.phoneRequired),
     plan: z.string().min(1, lang_1.landing.planRequired),
     message: z.string().min(10, lang_1.landing.messageTooShort),
-})
+}))
 
 const Landing = ({ initialData }: { initialData?: any }) => {
+  const lang_1 = useT();
     const sliderRef = useRef<HTMLDivElement>(null)
     const [showAd, setShowAd] = useState(false)
     const [isMuted, setIsMuted] = useState(true)
@@ -175,7 +177,7 @@ const Landing = ({ initialData }: { initialData?: any }) => {
                                     parsed.searchParams.set('autoplay', '1');
                                     parsed.searchParams.set('loop', '1');
                                     url = parsed.toString();
-                                } catch (e) {
+                                } catch {
                                     const separator = url.includes('?') ? '&' : '?';
                                     url = `${url}${separator}mute=${isMuted ? '1' : '0'}&muted=${isMuted ? '1' : '0'}&autoplay=1&loop=1`;
                                 }
@@ -371,7 +373,7 @@ const Landing = ({ initialData }: { initialData?: any }) => {
                                 <form.Field
                                     name="name"
                                     validators={{
-                                        onChange: ({ value }) => contactSchema.shape.name.safeParse(value).success ? undefined : lang_1.landing.nameRequired
+                                        onChange: ({ value }) => contactSchema(lang_1).shape.name.safeParse(value).success ? undefined : lang_1.landing.nameRequired
                                     }}
                                 >
                                     {(field) => {
@@ -389,7 +391,7 @@ const Landing = ({ initialData }: { initialData?: any }) => {
                                 <form.Field
                                     name="email"
                                     validators={{
-                                        onChange: ({ value }) => contactSchema.shape.email.safeParse(value).success ? undefined : lang_1.helpers.invalidEmail
+                                        onChange: ({ value }) => contactSchema(lang_1).shape.email.safeParse(value).success ? undefined : lang_1.helpers.invalidEmail
                                     }}
                                 >
                                     {(field) => {
@@ -408,7 +410,7 @@ const Landing = ({ initialData }: { initialData?: any }) => {
                                     <form.Field
                                         name="phone"
                                         validators={{
-                                            onChange: ({ value }) => contactSchema.shape.phone.safeParse(value).success ? undefined : lang_1.landing.phoneRequired
+                                            onChange: ({ value }) => contactSchema(lang_1).shape.phone.safeParse(value).success ? undefined : lang_1.landing.phoneRequired
                                         }}
                                     >
                                         {(field) => {
@@ -426,7 +428,7 @@ const Landing = ({ initialData }: { initialData?: any }) => {
                                     <form.Field
                                         name="plan"
                                         validators={{
-                                            onChange: ({ value }) => contactSchema.shape.plan.safeParse(value).success ? undefined : lang_1.landing.planRequired
+                                            onChange: ({ value }) => contactSchema(lang_1).shape.plan.safeParse(value).success ? undefined : lang_1.landing.planRequired
                                         }}
                                     >
                                         {(field) => {
@@ -456,7 +458,7 @@ const Landing = ({ initialData }: { initialData?: any }) => {
                                 <form.Field
                                     name="message"
                                     validators={{
-                                        onChange: ({ value }) => contactSchema.shape.message.safeParse(value).success ? undefined : lang_1.landing.messageTooShort
+                                        onChange: ({ value }) => contactSchema(lang_1).shape.message.safeParse(value).success ? undefined : lang_1.landing.messageTooShort
                                     }}
                                 >
                                     {(field) => {

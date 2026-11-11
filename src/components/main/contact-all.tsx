@@ -17,11 +17,12 @@ import { toast } from 'sonner'
 import { Spinner } from '../ui/spinner'
 import { cn } from '@/lib/utils'
 import { ChevronsUpDown, MessageCirclePlus } from 'lucide-react'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import { useWindowSize } from '@/hooks/useWindowSize'
 import { Slider } from '../ui/slider'
 
 const ContactAll = () => {
+  const lang_1 = useT();
     const { isAuth } = useAuth((state) => state)
     const [open, setOpen] = useState(false);
     const { width } = useWindowSize();
@@ -115,7 +116,7 @@ const ContactAll = () => {
                     const url = new URL(lastPage.next);
                     const page = url.searchParams.get("page");
                     return page ? Number(page) : undefined;
-                } catch (e) {
+                } catch {
                     const match = lastPage.next.match(/[?&]page=(\d+)/);
                     return match ? Number(match[1]) : undefined;
                 }
@@ -164,7 +165,7 @@ const ContactAll = () => {
                                     name="property_type"
                                     validators={{
                                         onSubmit: ({ value }) => {
-                                            const res = contactAllSchema.shape.property_type.safeParse(value)
+                                            const res = contactAllSchema(lang_1).shape.property_type.safeParse(value)
                                             return res.success ? undefined : res.error.issues[0].message
                                         }
                                     }}
@@ -195,7 +196,7 @@ const ContactAll = () => {
                                     name="contract_type"
                                     validators={{
                                         onSubmit: ({ value }) => {
-                                            const res = contactAllSchema.shape.contract_type.safeParse(value)
+                                            const res = contactAllSchema(lang_1).shape.contract_type.safeParse(value)
                                             return res.success ? undefined : res.error.issues[0].message
                                         }
                                     }}
@@ -207,7 +208,7 @@ const ContactAll = () => {
                                                 <FieldLabel>{lang_1.filters.contractType}</FieldLabel>
                                                 <div className={cn(hasError && "border border-red-500 rounded-md")}>
                                                     <SearchableSelect
-                                                        data={contractTypes}
+                                                        data={contractTypes(lang_1)}
                                                         value={field.state.value}
                                                         onChange={(v) => field.handleChange(v)}
                                                         placeholder={lang_1.filters.contractType}
@@ -223,7 +224,7 @@ const ContactAll = () => {
                                     name="area"
                                     validators={{
                                         onSubmit: ({ value }) => {
-                                            const res = contactAllSchema.shape.area.safeParse(value)
+                                            const res = contactAllSchema(lang_1).shape.area.safeParse(value)
                                             return res.success ? undefined : res.error.issues[0].message
                                         }
                                     }}
@@ -255,7 +256,7 @@ const ContactAll = () => {
                                     name="city"
                                     validators={{
                                         onSubmit: ({ value }) => {
-                                            const res = contactAllSchema.shape.city.safeParse(value)
+                                            const res = contactAllSchema(lang_1).shape.city.safeParse(value)
                                             return res.success ? undefined : res.error.issues[0].message
                                         }
                                     }}
@@ -310,7 +311,7 @@ const ContactAll = () => {
                                                             name="property_area_from"
                                                             validators={{
                                                                 onSubmit: ({ value }) => {
-                                                                    const res = contactAllSchema.shape.property_area_from.safeParse(value)
+                                                                    const res = contactAllSchema(lang_1).shape.property_area_from.safeParse(value)
                                                                     return res.success ? undefined : res.error.issues[0].message
                                                                 }
                                                             }}
@@ -341,7 +342,7 @@ const ContactAll = () => {
                                                             name="property_area_to"
                                                             validators={{
                                                                 onSubmit: ({ value }) => {
-                                                                    const res = contactAllSchema.shape.property_area_to.safeParse(value)
+                                                                    const res = contactAllSchema(lang_1).shape.property_area_to.safeParse(value)
                                                                     return res.success ? undefined : res.error.issues[0].message
                                                                 }
                                                             }}
@@ -422,7 +423,7 @@ const ContactAll = () => {
                                                             name="price_from"
                                                             validators={{
                                                                 onSubmit: ({ value }) => {
-                                                                    const res = contactAllSchema.shape.price_from.safeParse(value)
+                                                                    const res = contactAllSchema(lang_1).shape.price_from.safeParse(value)
                                                                     return res.success ? undefined : res.error.issues[0].message
                                                                 }
                                                             }}
@@ -454,7 +455,7 @@ const ContactAll = () => {
                                                             name="price_to"
                                                             validators={{
                                                                 onSubmit: ({ value }) => {
-                                                                    const res = contactAllSchema.shape.price_to.safeParse(value)
+                                                                    const res = contactAllSchema(lang_1).shape.price_to.safeParse(value)
                                                                     return res.success ? undefined : res.error.issues[0].message
                                                                 }
                                                             }}
@@ -516,7 +517,7 @@ const ContactAll = () => {
                                 name="message"
                                 validators={{
                                     onSubmit: ({ value }) => {
-                                        const res = contactAllSchema.shape.message.safeParse(value)
+                                        const res = contactAllSchema(lang_1).shape.message.safeParse(value)
                                         return res.success ? undefined : res.error.issues[0].message
                                     }
                                 }}

@@ -1,12 +1,12 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { lang_1 } from "./lang_1"
+import type { Dictionary } from "@/i18n/useT";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const Links = [
+export const Links = (lang_1: Dictionary) => ([
   {
     name: lang_1.nav.home,
     href: "/",
@@ -35,7 +35,7 @@ export const Links = [
     name: lang_1.nav.loanAdvisors,
     href: "/loan-advisors",
   },
-]
+])
 
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);

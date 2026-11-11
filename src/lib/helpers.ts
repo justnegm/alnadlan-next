@@ -2,7 +2,7 @@ import { z } from "zod";
 import { useEffect } from "react";
 import type { RefObject } from "react";
 import { toast } from "sonner";
-import { lang_1 } from "./lang_1";
+import { dictionaries, type Dictionary } from "@/i18n/useT";
 
 
 export function useHorizontalDragScroll(ref: RefObject<HTMLElement | null>) {
@@ -53,14 +53,14 @@ export function useHorizontalDragScroll(ref: RefObject<HTMLElement | null>) {
   }, [ref]);
 }
 
-export const resendEmailSchema = z.object({
+export const resendEmailSchema = (lang_1: Dictionary) => (z.object({
   email: z.string().email(lang_1.helpers.invalidEmail),
-});
-export const loginSchema = z.object({
+}));
+export const loginSchema = (lang_1: Dictionary) => (z.object({
   email: z.string().email(lang_1.helpers.invalidEmail),
   password: z.string().min(6, lang_1.helpers.passwordMinLength),
-});
-export const changePasswordSchema = z
+}));
+export const changePasswordSchema = (lang_1: Dictionary) => (z
   .object({
     new_password1: z.string().min(6, lang_1.helpers.passwordMinLength),
     new_password2: z.string().min(6, lang_1.helpers.passwordMinLength),
@@ -68,19 +68,19 @@ export const changePasswordSchema = z
   .refine((data) => data.new_password1 === data.new_password2, {
     message: lang_1.helpers.passwordMismatch,
     path: ["new_password2"],
-  });
-export const updatePasswordSchema = z.object({
+  }));
+export const updatePasswordSchema = (lang_1: Dictionary) => (z.object({
   old_password: z.string().min(1, lang_1.helpers.oldPasswordRequired),
   new_password1: z.string().min(6, lang_1.helpers.passwordMinLength),
   new_password2: z.string(),
-});
-export const contactSchema = z.object({
+}));
+export const contactSchema = (lang_1: Dictionary) => (z.object({
   email: z.string().email(lang_1.helpers.invalidEmail),
   name: z.string().min(2, lang_1.helpers.nameMinLength),
   phone: z.string().min(1, lang_1.helpers.phoneInvalid),
   message: z.string().min(2, lang_1.helpers.messageMinLength),
-});
-export const contactAllSchema = z.object({
+}));
+export const contactAllSchema = (lang_1: Dictionary) => (z.object({
   message: z.string().min(2, lang_1.helpers.messageMinLength),
   property_type: z.string().min(1, lang_1.helpers.typeRequired),
   contract_type: z.string().min(1, lang_1.helpers.contractTypeRequired),
@@ -90,9 +90,9 @@ export const contactAllSchema = z.object({
   property_area_to: z.string().min(1, lang_1.helpers.spaceRequired),
   price_from: z.string().min(1, lang_1.helpers.priceFromRequired),
   price_to: z.string().min(1, lang_1.helpers.priceToRequired),
-});
+}));
 
-export const registerSchema = z
+export const registerSchema = (lang_1: Dictionary) => (z
   .object({
     full_name: z.string().min(3, lang_1.helpers.fullNameMinLength),
     email: z.string().email(lang_1.helpers.invalidEmail),
@@ -103,7 +103,7 @@ export const registerSchema = z
   .refine((data) => data.password1 === data.password2, {
     message: lang_1.helpers.passwordMismatch,
     path: ["password2"],
-  });
+  }));
 
 
 
@@ -121,7 +121,9 @@ export const shareUrl = async ({ url = '', title = '', text = '' }) => {
   } else {
     try {
       await navigator.clipboard.writeText(url);
-      toast.success(lang_1.helpers.linkCopied);
+      // Not a component, so no hook: the root layout sets <html lang> per locale.
+      const t = dictionaries[document.documentElement.lang] ?? dictionaries.he;
+      toast.success(t.helpers.linkCopied);
     } catch (err) {
       console.error('Failed to copy:', err);
     }
@@ -137,7 +139,7 @@ export const formatPrice = (price: string | number | undefined | null): string =
   }).format(num);
 };
 
-export const contractTypes = [
+export const contractTypes = (lang_1: Dictionary) => ([
   {
     id: 1,
     name: lang_1.helpers.contractTypeRent
@@ -146,9 +148,9 @@ export const contractTypes = [
     id: 2,
     name: lang_1.helpers.contractTypeSell
   }
-]
+])
 
-export const propertyStatuses = [
+export const propertyStatuses = (lang_1: Dictionary) => ([
   {
     id: 1,
     name: lang_1.helpers.statusExcellent
@@ -165,14 +167,14 @@ export const propertyStatuses = [
     id: 4,
     name: lang_1.helpers.statusNeedsRestoration
   }
-]
+])
 
-export const propertyConditions = [
+export const propertyConditions = (lang_1: Dictionary) => ([
   { id: "new", name: lang_1.helpers.conditionNew },
   { id: "good", name: lang_1.helpers.conditionGood },
   { id: "fair", name: lang_1.helpers.conditionFair },
   { id: "poor", name: lang_1.helpers.conditionPoor }
-];
+]);
 
 export const createNumberArray = (start: number, end: number): number[] => {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
@@ -197,7 +199,7 @@ export const property_prices = [
   }
 ]
 
-export const experiencesInYears = [
+export const experiencesInYears = (lang_1: Dictionary) => ([
   {
     id: 1,
     name: lang_1.helpers.year1
@@ -242,6 +244,6 @@ export const experiencesInYears = [
     id: 11,
     name: lang_1.helpers.yearsMore10,
   },
-]
+])
 
 

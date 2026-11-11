@@ -8,7 +8,7 @@ import { Link } from '@/i18n/navigation'
 import { useState } from 'react'
 import placeholderAsset from '@/assets/placeholder.webp'
 import { formatPrice, shareUrl } from '@/lib/helpers'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import AddToFavBtn from './add-to-fav-btn'
 import { Image } from "@/components/ui/image";
 import { BsBadge3D } from "react-icons/bs";
@@ -28,6 +28,7 @@ interface Props {
     state?: any;
 }
 const PropertyCard = ({ person, office, personUrl, grid, data, project, state }: Props) => {
+  const lang_1 = useT();
     const { language } = useLanguage();
     const [currentImage, setCurrentImage] = useState(0)
     const handleNextImage = () => {
@@ -71,7 +72,7 @@ const PropertyCard = ({ person, office, personUrl, grid, data, project, state }:
             <div className='relative w-full h-40 rounded-xl overflow-hidden'>
                 <span className='absolute top-0 left-0 w-full h-full bg-black/15 pointer-events-none' />
                 <Link href={detailHref} className='w-full h-full block'>
-                    <Image src={person || office ? data?.image : data?.images?.length > 0 ? data?.images[currentImage]?.image : placeholder} alt="sample" className='w-full h-full object-cover pointer-events-none' />
+                    <Image sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 90vw" src={person || office ? data?.image : data?.images?.length > 0 ? data?.images[currentImage]?.image : placeholder} alt="sample" className='w-full h-full object-cover pointer-events-none' />
                 </Link>
                 <div className='flex items-center justify-between absolute top-2 left-1/2 -translate-x-1/2 w-[90%]'>
                     <div className='flex items-center gap-1'>

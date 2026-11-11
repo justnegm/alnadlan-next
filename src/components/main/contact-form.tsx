@@ -14,7 +14,7 @@ import { createLeadMessageAll, getUser } from '@/server/main';
 import { toast } from 'sonner';
 import { Spinner } from '../ui/spinner';
 import { cn } from '@/lib/utils';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 // import SocialMediaList from '../ui/social-media-list';
 import { Image } from "@/components/ui/image";
 import { useEffect } from 'react';
@@ -22,6 +22,7 @@ import { useEffect } from 'react';
 import { useAuth } from '@/store/auth-slice';
 
 const ContactForm = ({ user, title, url }: any) => {
+  const lang_1 = useT();
     const { isAuth } = useAuth((state) => state);
     const router = useRouter();
     const pathname = usePathname();
@@ -162,7 +163,7 @@ const ContactForm = ({ user, title, url }: any) => {
                                 name="name"
                                 validators={{
                                     onSubmit: ({ value }) => {
-                                        const res = contactSchema.shape.name.safeParse(value)
+                                        const res = contactSchema(lang_1).shape.name.safeParse(value)
                                         return res.success ? undefined : res.error.issues[0].message
                                     }
                                 }}
@@ -186,7 +187,7 @@ const ContactForm = ({ user, title, url }: any) => {
                                 name="phone"
                                 validators={{
                                     onSubmit: ({ value }) => {
-                                        const res = contactSchema.shape.phone.safeParse(value)
+                                        const res = contactSchema(lang_1).shape.phone.safeParse(value)
                                         return res.success ? undefined : res.error.issues[0].message
                                     }
                                 }}
@@ -210,7 +211,7 @@ const ContactForm = ({ user, title, url }: any) => {
                                 name="email"
                                 validators={{
                                     onSubmit: ({ value }) => {
-                                        const res = contactSchema.shape.email.safeParse(value)
+                                        const res = contactSchema(lang_1).shape.email.safeParse(value)
                                         return res.success ? undefined : res.error.issues[0].message
                                     }
                                 }}
@@ -234,7 +235,7 @@ const ContactForm = ({ user, title, url }: any) => {
                                 name="message"
                                 validators={{
                                     onSubmit: ({ value }) => {
-                                        const res = contactSchema.shape.message.safeParse(value)
+                                        const res = contactSchema(lang_1).shape.message.safeParse(value)
                                         return res.success ? undefined : res.error.issues[0].message
                                     }
                                 }}

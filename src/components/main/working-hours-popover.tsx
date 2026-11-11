@@ -1,12 +1,13 @@
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Button } from "@/components/ui/button"
-import { lang_1 } from "@/lib/lang_1"
+import { useT } from "@/i18n/useT";
 
 interface WorkingHoursPopoverProps {
     working_hours?: any[]
 }
 
 const WorkingHoursPopover = ({ working_hours }: WorkingHoursPopoverProps) => {
+  const lang_1 = useT();
     return (
         <Popover>
             <PopoverTrigger asChild>

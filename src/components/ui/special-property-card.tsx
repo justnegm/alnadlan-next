@@ -8,7 +8,7 @@ import { formatPrice, shareUrl } from '@/lib/helpers';
 import { useState } from 'react';
 import placeholderAsset from '@/assets/placeholder.webp'
 import { Link } from '@/i18n/navigation';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 import AddToFavBtn from './add-to-fav-btn';
 import { Image } from "@/components/ui/image";
 import { useLanguage } from '@/context/LanguageContext';
@@ -18,6 +18,7 @@ const placeholder = (placeholderAsset as any)?.src ?? (placeholderAsset as any);
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://alnadlan.co.il";
 
 const SpecialPropertyCard = ({ data, layoutTwo, grid, project, shorter }: any) => {
+  const lang_1 = useT();
     const { language } = useLanguage();
     const [currentImage, setCurrentImage] = useState(0)
     const handleNextImage = (e: React.MouseEvent) => {
@@ -50,7 +51,7 @@ const SpecialPropertyCard = ({ data, layoutTwo, grid, project, shorter }: any) =
     return (
         <Reveal className={cn(grid ? 'min-w-full w-full' : 'min-w-75')}>
             <div className='w-full h-full flex flex-col gap-4 p-3 rounded-xl  relative overflow-hidden'>
-                <Image src={data?.images?.length > 0 ? data?.images[currentImage]?.image : placeholder} alt="bg" className='absolute inset-0 w-full h-full object-cover' />
+                <Image sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 90vw" src={data?.images?.length > 0 ? data?.images[currentImage]?.image : placeholder} alt="bg" className='absolute inset-0 w-full h-full object-cover' />
                 <span className='bg-black/35 absolute inset-0 w-full h-full' />
                 <span className='bg-linear-to-t from-black/80 via-black/40 to-transparent absolute inset-0 w-full h-full' />
                 <div className={cn('relative w-full rounded-xl overflow-hidden', shorter ? 'h-26' : 'h-40')}>

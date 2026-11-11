@@ -14,10 +14,11 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Eye, EyeOff } from 'lucide-react'
 import { Spinner } from '@/components/ui/spinner'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 
 const ResetPasswordConfirmation = () => {
+  const lang_1 = useT();
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false)
     const [showPassword2, setShowPassword2] = useState(false)

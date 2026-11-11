@@ -2,12 +2,13 @@
 // and passed down, so this CMS content is fully SSR'd (no client fetch).
 import logoAsset from '@/assets/logo.jpeg'
 import { formatDate } from '@/lib/utils'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 
 const logo = (logoAsset as any)?.src ?? (logoAsset as any);
 
 const PrivacyPolicy = ({ data }: { data: any }) => {
+  const lang_1 = useT();
     return (
         <section className="mt-20 flex flex-col gap-20">
             <div className="min-h-[50vh] bg-no-repeat bg-top bg-cover flex justify-center items-center">

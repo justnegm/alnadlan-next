@@ -13,13 +13,14 @@ import Loader from "@/components/ui/loader"
 import useFilterNavigation from "@/hooks/useFilterNavigation"
 import PersonFilter from "@/components/main/person-filter"
 import NoData from "@/components/ui/no-data"
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import Error from "../error"
 import { getLoanAdvisorsMedia } from '@/server/media'
 
 const bg = (bgAsset as any)?.src ?? (bgAsset as any);
 
 const LoanAdvicers = ({ initialData }: { initialData?: ListInitialData }) => {
+  const lang_1 = useT();
     const searchParams = useSearchParams();
     const { handleFilters } = useFilterNavigation();
     const [page, setPage] = useState(1);

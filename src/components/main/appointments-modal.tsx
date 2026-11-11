@@ -16,7 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { lang_1 } from "@/lib/lang_1";
+import { useT } from "@/i18n/useT";
 import { cn } from "@/lib/utils";
 import type { UserAppointmentHourPayload } from "@/server/main";
 
@@ -134,6 +134,7 @@ const AppointmentsModal = ({
     onSubmitAppointments,
     isSubmitting = false,
 }: AppointmentsModalProps) => {
+  const lang_1 = useT();
     const [open, setOpen] = useState(false);
     const [schedule, setSchedule] = useState<DayAppointment[]>(getDefaultSchedule);
 

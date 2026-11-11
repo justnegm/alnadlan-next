@@ -11,10 +11,11 @@ import { getUser, updateUser } from "@/server/main"
 import { toast } from "sonner"
 import { useRouter } from "@/i18n/navigation"
 import { User, Image as ImageIcon, X, Loader2 } from 'lucide-react'
-import { lang_1 } from "@/lib/lang_1"
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 
 const ProfileEdit = () => {
+  const lang_1 = useT();
     const router = useRouter();
     const queryClient = useQueryClient();
     const { data: userData } = useQuery({

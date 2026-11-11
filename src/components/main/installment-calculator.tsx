@@ -5,13 +5,14 @@ import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 import { useQuery } from "@tanstack/react-query"
 import { getBankInfo } from "@/server/main"
-import { lang_1 } from "@/lib/lang_1"
+import { useT } from "@/i18n/useT";
 import placeholderAsset from "@/assets/placeholder.webp"
 import { Image } from "@/components/ui/image";
 
 const placeholder = (placeholderAsset as any)?.src ?? (placeholderAsset as any);
 
 export default function InstallmentCalculator({ price }: { price: number | string }) {
+  const lang_1 = useT();
     const [downPaymentPercent, setDownPaymentPercent] = useState([20])
     const [years, setYears] = useState([15])
 

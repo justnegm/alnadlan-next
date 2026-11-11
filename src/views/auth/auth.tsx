@@ -22,10 +22,11 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/store/auth-slice';
 import { Spinner } from '@/components/ui/spinner';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 
 const Auth = () => {
+  const lang_1 = useT();
   const loginAuth = useAuth((s) => s.login);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -42,8 +43,8 @@ const Auth = () => {
 
   const { mutate, status } = useMutation({
     mutationFn: (formData: any) => login(formData),
-    onSuccess: (res: any) => {
-      loginAuth(res.access, res.refresh);
+    onSuccess: () => {
+      loginAuth();
       // react-router's location.state.from doesn't exist in Next; the
       // redirect target is carried in the ?next= query param instead.
       const from = searchParams.get("next") || "/";
@@ -72,7 +73,7 @@ const Auth = () => {
               name="email"
               validators={{
                 onChange: ({ value }) => {
-                  const result = loginSchema.shape.email.safeParse(value)
+                  const result = loginSchema(lang_1).shape.email.safeParse(value)
                   return result.success ? undefined : result.error.issues[0].message
                 },
               }}
@@ -104,7 +105,7 @@ const Auth = () => {
               name="password"
               validators={{
                 onChange: ({ value }) => {
-                  const result = loginSchema.shape.password.safeParse(value)
+                  const result = loginSchema(lang_1).shape.password.safeParse(value)
                   return result.success ? undefined : result.error.issues[0].message
                 },
               }}

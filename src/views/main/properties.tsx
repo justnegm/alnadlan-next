@@ -17,12 +17,13 @@ import ListPagination from "@/components/main/pagination"
 import PropertyFilter from "@/components/main/property-filter"
 import useFilterNavigation from '@/hooks/useFilterNavigation'
 import NoData from '@/components/ui/no-data'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 import { getPropertiesMedia } from '@/server/media'
 
 const bg = (bgAsset as any)?.src ?? (bgAsset as any);
 
 const Properties = ({ initialData }: { initialData?: ListInitialData }) => {
+  const lang_1 = useT();
     const searchParams = useSearchParams();
     const { handleFilters } = useFilterNavigation();
 
@@ -60,7 +61,7 @@ const Properties = ({ initialData }: { initialData?: ListInitialData }) => {
                     const url = new URL(lastPage.next);
                     const page = url.searchParams.get("page");
                     return page ? Number(page) : undefined;
-                } catch (e) {
+                } catch {
                     const match = lastPage.next.match(/[?&]page=(\d+)/);
                     return match ? Number(match[1]) : undefined;
                 }

@@ -20,7 +20,7 @@ import logoAsset from '@/assets/logo.jpeg'
 import { Textarea } from '@/components/ui/textarea';
 import { FaFacebook, FaInstagram, FaWhatsapp, FaLinkedin, FaTiktok, FaTwitter } from 'react-icons/fa';
 import { Spinner } from '@/components/ui/spinner';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 import { getContactUsMedia } from '@/server/media';
 import { Image } from "@/components/ui/image";
 
@@ -33,6 +33,7 @@ export type ContactInitialData = {
 };
 
 const Contact = ({ initialData }: { initialData?: ContactInitialData }) => {
+  const lang_1 = useT();
     const { data } = useQuery({
         queryKey: ['main-info'],
         queryFn: getMainInfo,
@@ -78,7 +79,7 @@ const Contact = ({ initialData }: { initialData?: ContactInitialData }) => {
                                 name="name"
                                 validators={{
                                     onChange: ({ value }) => {
-                                        const result = contactSchema.shape.name.safeParse(value)
+                                        const result = contactSchema(lang_1).shape.name.safeParse(value)
                                         return result.success ? undefined : result.error.issues[0].message
                                     },
                                 }}
@@ -102,7 +103,7 @@ const Contact = ({ initialData }: { initialData?: ContactInitialData }) => {
                                 name="email"
                                 validators={{
                                     onChange: ({ value }) => {
-                                        const result = contactSchema.shape.email.safeParse(value)
+                                        const result = contactSchema(lang_1).shape.email.safeParse(value)
                                         return result.success ? undefined : result.error.issues[0].message
                                     },
                                 }}
@@ -126,7 +127,7 @@ const Contact = ({ initialData }: { initialData?: ContactInitialData }) => {
                                 name="phone"
                                 validators={{
                                     onChange: ({ value }) => {
-                                        const result = contactSchema.shape.phone.safeParse(value)
+                                        const result = contactSchema(lang_1).shape.phone.safeParse(value)
                                         return result.success ? undefined : result.error.issues[0].message
                                     },
                                 }}
@@ -151,7 +152,7 @@ const Contact = ({ initialData }: { initialData?: ContactInitialData }) => {
                                 name="message"
                                 validators={{
                                     onChange: ({ value }) => {
-                                        const result = contactSchema.shape.message.safeParse(value)
+                                        const result = contactSchema(lang_1).shape.message.safeParse(value)
                                         return result.success ? undefined : result.error.issues[0].message
                                     },
                                 }}

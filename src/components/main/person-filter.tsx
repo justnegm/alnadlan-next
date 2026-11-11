@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 
 import SearchableSelect from '../ui/searchable-select'
 import { experiencesInYears } from '@/lib/helpers'
-import { lang_1 } from '@/lib/lang_1'
+import { useT } from "@/i18n/useT";
 
 interface PersonFilterProps {
     title?: string;
@@ -17,6 +17,7 @@ interface PersonFilterProps {
 }
 
 const PersonFilter = ({ title, text, handleFilters, currentFilters }: PersonFilterProps) => {
+  const lang_1 = useT();
     const emptyFilters = {
         expertise: "",
         area: "",
@@ -56,7 +57,7 @@ const PersonFilter = ({ title, text, handleFilters, currentFilters }: PersonFilt
                     const url = new URL(lastPage.next);
                     const page = url.searchParams.get("page");
                     return page ? Number(page) : undefined;
-                } catch (e) {
+                } catch {
                     const match = lastPage.next.match(/[?&]page=(\d+)/);
                     return match ? Number(match[1]) : undefined;
                 }
@@ -109,7 +110,7 @@ const PersonFilter = ({ title, text, handleFilters, currentFilters }: PersonFilt
                 />
                 <SearchableSelect
                     placeholder={lang_1.filters.yearsOfExperience}
-                    data={experiencesInYears}
+                    data={experiencesInYears(lang_1)}
                     onChange={(value: any) => setFilters({ ...filters, expertise: value })}
                     value={filters.expertise}
                 />

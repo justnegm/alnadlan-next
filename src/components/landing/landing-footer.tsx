@@ -5,18 +5,20 @@ import { Link } from '@/i18n/navigation'
 import { FaFacebook, FaInstagram, FaWhatsapp, FaLinkedin, FaTiktok, FaTwitter } from "react-icons/fa";
 import { useQuery } from '@tanstack/react-query';
 import { getMainInfo } from '@/server/main';
-import { lang_1 } from '@/lib/lang_1';
+import type { Dictionary } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
+import { useT } from "@/i18n/useT";
 
-const landingLinks = [
+const landingLinks = (lang_1: Dictionary) => ([
     { name: lang_1.nav.home, href: "#hero" },
     { name: lang_1.landing.about, href: "#about" },
     { name: lang_1.landing.partners, href: "#partners" },
     { name: lang_1.landing.plans, href: "#plans" },
     { name: lang_1.footer.contact, href: "#contact" },
-];
+]);
 
 const LandingFooter = () => {
+  const lang_1 = useT();
     const { data } = useQuery({
         queryKey: ['main-info'],
         queryFn: getMainInfo
@@ -39,7 +41,7 @@ const LandingFooter = () => {
                 </div>
 
                 <div className="flex flex-wrap justify-center lg:gap-20 gap-6">
-                    {landingLinks.map((link, index) => (
+                    {landingLinks(lang_1).map((link, index) => (
                         <a key={index} href={link.href} className="hover:text-blue-300 transition-colors font-medium">
                             {link.name}
                         </a>

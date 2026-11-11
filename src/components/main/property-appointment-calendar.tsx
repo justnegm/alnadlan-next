@@ -16,7 +16,7 @@ import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { createAppointmentLead, getAppointmentLeads } from "@/server/main";
-import { lang_1 } from "@/lib/lang_1";
+import { useT } from "@/i18n/useT";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/store/auth-slice";
 import type { DayKey } from "./appointments-modal";
@@ -100,6 +100,7 @@ const PropertyAppointmentCalendar = ({
     currentUser,
     userDuration,
 }: PropertyAppointmentCalendarProps) => {
+  const lang_1 = useT();
     const { isAuth } = useAuth((state) => state);
     const router = useRouter();
     const pathname = usePathname();

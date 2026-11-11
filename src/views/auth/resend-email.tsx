@@ -19,9 +19,10 @@ import { Input } from '@/components/ui/input';
 import { resendEmailSchema } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Spinner } from '@/components/ui/spinner';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 const ResendEmail = () => {
+  const lang_1 = useT();
     const [seconds, setSeconds] = useState(0);
     const form = useForm({
         defaultValues: {
@@ -70,7 +71,7 @@ const ResendEmail = () => {
                             name="email"
                             validators={{
                                 onChange: ({ value }) => {
-                                    const result = resendEmailSchema.shape.email.safeParse(value)
+                                    const result = resendEmailSchema(lang_1).shape.email.safeParse(value)
                                     return result.success ? undefined : result.error.issues[0].message
                                 },
                             }}

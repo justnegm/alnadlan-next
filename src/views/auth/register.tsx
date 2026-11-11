@@ -22,9 +22,10 @@ import { toast } from 'sonner';
 import { registerSchema } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Spinner } from '@/components/ui/spinner';
-import { lang_1 } from '@/lib/lang_1';
+import { useT } from "@/i18n/useT";
 import { Image } from "@/components/ui/image";
 const Register = () => {
+  const lang_1 = useT();
     const router = useRouter();
     const [showPassword, setShowPassword] = useState(false)
     const form = useForm({
@@ -75,7 +76,7 @@ const Register = () => {
                             name="full_name"
                             validators={{
                                 onChange: ({ value }) => {
-                                    const result = registerSchema.shape.full_name.safeParse(value)
+                                    const result = registerSchema(lang_1).shape.full_name.safeParse(value)
                                     return result.success ? undefined : result.error.issues[0].message
                                 },
                             }}
@@ -107,7 +108,7 @@ const Register = () => {
                             name="email"
                             validators={{
                                 onChange: ({ value }) => {
-                                    const result = registerSchema.shape.email.safeParse(value)
+                                    const result = registerSchema(lang_1).shape.email.safeParse(value)
                                     return result.success ? undefined : result.error.issues[0].message
                                 },
                             }}
@@ -139,7 +140,7 @@ const Register = () => {
                             name="phone"
                             validators={{
                                 onChange: ({ value }) => {
-                                    const result = registerSchema.shape.phone.safeParse(value)
+                                    const result = registerSchema(lang_1).shape.phone.safeParse(value)
                                     return result.success ? undefined : result.error.issues[0].message
                                 },
                             }}
@@ -171,7 +172,7 @@ const Register = () => {
                             name="password1"
                             validators={{
                                 onChange: ({ value }) => {
-                                    const result = registerSchema.shape.password1.safeParse(value)
+                                    const result = registerSchema(lang_1).shape.password1.safeParse(value)
                                     return result.success ? undefined : result.error.issues[0].message
                                 },
                             }}
@@ -214,7 +215,7 @@ const Register = () => {
                             validators={{
                                 onChangeListenTo: ["password1"],
                                 onChange: ({ value, fieldApi }) => {
-                                    const result = registerSchema.shape.password2.safeParse(value)
+                                    const result = registerSchema(lang_1).shape.password2.safeParse(value)
                                     if (!result.success) return result.error.issues[0].message
                                     const password = fieldApi.form.getFieldValue("password1")
                                     if (!value || !password || value !== password) return lang_1.auth.passwordMismatch
